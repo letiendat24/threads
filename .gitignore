@@ -1,0 +1,19 @@
+# dependencies
+/node_modules
+/.pnpm-store
+
+# next
+/.next
+
+# tests
+/coverage
+/playwright-report
+/test-results
+
+# docs
+/docs
+
+# env
+.env
+.env.*
+!.env.example
