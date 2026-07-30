@@ -5,6 +5,12 @@
 # next
 /.next
 
+# build artifacts
+/tsconfig.tsbuildinfo
+
+# system files
+.DS_Store
+
 # tests
 /coverage
 /playwright-report
