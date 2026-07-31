@@ -13,6 +13,7 @@ import { UserName } from "@/components/shared/user-name";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { UserProfile } from "@/features/profiles/types/profile-types";
 import { useSearchQuery } from "@/features/search/hooks/use-search-query";
 import { SEARCH_MIN_QUERY_LENGTH, SearchService } from "@/services/SearchService";
 import { useQuery } from "@tanstack/react-query";
@@ -39,16 +40,15 @@ export function SearchView() {
   const trimmedKeyword = keyword.trim();
   const hasSearchableKeyword = debouncedKeyword.length >= SEARCH_MIN_QUERY_LENGTH;
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["sugggestions"],
+  const { data } = useQuery<{ data?: UserProfile[] }>({
+    queryKey: ["suggestions"],
     queryFn: async () => {
       const res = await SearchService.getSuggestions();
-      return res?.data;
-    }
+      return res?.data as { data?: UserProfile[] };
+    },
   });
 
-  const sugggestions = data?.data;
-
+  const suggestions = data?.data ?? [];
 
   useEffect(() => {
     setKeyword(initialKeyword);
@@ -118,17 +118,19 @@ export function SearchView() {
       </div>
 
       {!trimmedKeyword ? (
-        sugggestions?.map((sugggestion: any) => {
+        suggestions.map((suggestion) => {
           return (
-            <article key={`user-${sugggestion.id}`} className="flex items-center gap-3 px-4 py-3">
-              <UserAvatar name={sugggestion.name} src={sugggestion.avatarUrl} size="md" />
+            <article key={`user-${suggestion.id}`} className="flex items-center gap-3 px-4 py-3">
+              <UserAvatar name={suggestion.name} src={suggestion.avatarUrl} size="md" />
               <div className="min-w-0 flex-1">
-                <UserName name={sugggestion.name} username={sugggestion.username} verified={sugggestion.isVerified} />
-                {sugggestion.bio ? <p className="mt-1 line-clamp-2 text-body-sm text-muted-foreground">{sugggestion.bio}</p> : null}
+                <UserName name={suggestion.name} username={suggestion.username} verified={suggestion.isVerified} />
+                {suggestion.bio ? (
+                  <p className="mt-1 line-clamp-2 text-body-sm text-muted-foreground">{suggestion.bio}</p>
+                ) : null}
               </div>
-              <FollowButton userId={sugggestion.id} following={sugggestion.isFollowing} />
+              <FollowButton userId={suggestion.id} following={suggestion.isFollowing} />
             </article>
-          )
+          );
         })
       ) : null}
 
