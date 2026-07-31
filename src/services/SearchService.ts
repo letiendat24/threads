@@ -20,5 +20,9 @@ export class SearchService {
     });
 
     return mapSearchResults(response.data);
-  }
+  };
+
+  static getSuggestions =  async () => {
+    return axiosClient.get<ApiEnvelope<unknown>>("/api/users/suggestions");
+  };
 }
