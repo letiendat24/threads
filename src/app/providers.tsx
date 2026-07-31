@@ -9,6 +9,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthSessionProvider } from "@/features/auth/components/auth-session-provider";
 import { createQueryClient } from "@/lib/query/query-client";
 
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 export function AppProviders({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => createQueryClient());
 
@@ -38,6 +40,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
           }}
         />
       </ThemeProvider>
+      <SpeedInsights />
     </QueryClientProvider>
   );
 }
