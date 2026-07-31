@@ -76,59 +76,63 @@ export function PostDetailView({ postId }: PostDetailViewProps) {
         <h1 className="text-page-title text-foreground">Post</h1>
       </header>
 
-      {postQuery.isPending ? <PostSkeleton media /> : null}
+      <div className="px-3 pt-3 md:px-4">
+        <section className="overflow-hidden rounded-t-xl border-x border-t border-border bg-surface" aria-label="Post detail content">
+          {postQuery.isPending ? <PostSkeleton media /> : null}
 
-      {postQuery.isError ? (
-        <div className="p-4">
-          <ErrorState
-            title={getErrorTitle(postQuery.error)}
-            description={postQuery.error instanceof Error ? postQuery.error.message : "Try opening the post again."}
-            action={
-              <Button type="button" variant="outline" onClick={() => void postQuery.refetch()}>
-                Retry
-              </Button>
-            }
-          />
-        </div>
-      ) : null}
-
-      {postQuery.data ? <PostCard post={postQuery.data} variant="detail" showConnector={replies.length > 0} /> : null}
-
-      {postQuery.data ? (
-        <section aria-label="Replies">
-          {repliesQuery.isPending ? <PostSkeletonList /> : null}
-          {repliesQuery.isError && replies.length === 0 ? (
+          {postQuery.isError ? (
             <div className="p-4">
               <ErrorState
-                title="Could not load replies"
-                description={repliesQuery.error instanceof Error ? repliesQuery.error.message : "Try loading replies again."}
+                title={getErrorTitle(postQuery.error)}
+                description={postQuery.error instanceof Error ? postQuery.error.message : "Try opening the post again."}
                 action={
-                  <Button type="button" variant="outline" onClick={() => void repliesQuery.refetch()}>
+                  <Button type="button" variant="outline" onClick={() => void postQuery.refetch()}>
                     Retry
                   </Button>
                 }
               />
             </div>
           ) : null}
-          {!repliesQuery.isPending && !repliesQuery.isError && replies.length === 0 ? (
-            <div className="p-4">
-              <EmptyState title="No replies yet" description="Replies will appear here when the API returns them." />
-            </div>
-          ) : null}
-          {replies.map((reply, index) => (
-            <PostCard key={`${reply.id}-${index}`} post={reply} variant="reply" showConnector={index < replies.length - 1} />
-          ))}
-          <div ref={loadMoreRef} className="min-h-1" aria-hidden="true" />
-          {repliesQuery.isFetchingNextPage ? <PostSkeleton className="border-b-0" /> : null}
-          {repliesQuery.hasNextPage && !repliesQuery.isFetchingNextPage ? (
-            <div className="flex justify-center border-t border-border p-4">
-              <Button type="button" variant="outline" onClick={() => void repliesQuery.fetchNextPage()}>
-                Load more replies
-              </Button>
-            </div>
+
+          {postQuery.data ? <PostCard post={postQuery.data} variant="detail" showConnector={replies.length > 0} /> : null}
+
+          {postQuery.data ? (
+            <section aria-label="Replies">
+              {repliesQuery.isPending ? <PostSkeletonList /> : null}
+              {repliesQuery.isError && replies.length === 0 ? (
+                <div className="p-4">
+                  <ErrorState
+                    title="Could not load replies"
+                    description={repliesQuery.error instanceof Error ? repliesQuery.error.message : "Try loading replies again."}
+                    action={
+                      <Button type="button" variant="outline" onClick={() => void repliesQuery.refetch()}>
+                        Retry
+                      </Button>
+                    }
+                  />
+                </div>
+              ) : null}
+              {!repliesQuery.isPending && !repliesQuery.isError && replies.length === 0 ? (
+                <div className="p-4">
+                  <EmptyState title="No replies yet" description="Replies will appear here when the API returns them." />
+                </div>
+              ) : null}
+              {replies.map((reply, index) => (
+                <PostCard key={`${reply.id}-${index}`} post={reply} variant="reply" showConnector={index < replies.length - 1} />
+              ))}
+              <div ref={loadMoreRef} className="min-h-1" aria-hidden="true" />
+              {repliesQuery.isFetchingNextPage ? <PostSkeleton className="border-b-0" /> : null}
+              {repliesQuery.hasNextPage && !repliesQuery.isFetchingNextPage ? (
+                <div className="flex justify-center border-t border-border p-4">
+                  <Button type="button" variant="outline" onClick={() => void repliesQuery.fetchNextPage()}>
+                    Load more replies
+                  </Button>
+                </div>
+              ) : null}
+            </section>
           ) : null}
         </section>
-      ) : null}
+      </div>
     </>
   );
 }

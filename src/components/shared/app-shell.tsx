@@ -13,12 +13,12 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground md:h-screen md:overflow-hidden">
       <MobileHeader />
       <NetworkStatusBanner />
-      <div className="mx-auto flex w-full max-w-shell">
+      <div className="app-scroll-layout mx-auto flex w-full max-w-shell md:h-screen md:overflow-y-auto md:overscroll-contain">
         <DesktopSidebar />
-        <main className="min-h-screen w-full min-w-0 rounded-md bg-background pb-mobile-nav md:max-w-feed md:pb-0">
+        <main className="min-h-screen w-full min-w-0 rounded-md bg-background pb-mobile-nav md:min-h-0 md:max-w-feed md:pb-0">
           {children}
         </main>
         <RightSidebar />

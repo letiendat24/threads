@@ -165,7 +165,33 @@ function unwrapSinglePost(response: unknown): unknown {
   return response;
 }
 
-export function mapPost(response: unknown): Post {
+function mapQuotedPost(rawPost: UnknownRecord, depth: number) {
+  if (depth > 0) {
+    return undefined;
+  }
+
+  const quotedPost = nestedRecord(rawPost, [
+    "quoted_post",
+    "quote_post",
+    "quotedPost",
+    "quotePost",
+    "original_post",
+    "originalPost",
+    "reposted_post",
+    "repostedPost",
+    "shared_post",
+    "sharedPost",
+    "post",
+  ]);
+
+  if (!quotedPost) {
+    return undefined;
+  }
+
+  return mapPostInternal(quotedPost, depth + 1);
+}
+
+function mapPostInternal(response: unknown, depth: number): Post {
   const rawPost = unwrapSinglePost(response);
 
   if (!isRecord(rawPost)) {
@@ -195,6 +221,7 @@ export function mapPost(response: unknown): Post {
 
   const id = String(firstNumber(rawPost, ["id"]) ?? firstString(rawPost, ["id", "uuid", "slug"]) ?? "unavailable");
   const author = mapAuthor(rawPost, id);
+  const quotedPost = mapQuotedPost(rawPost, depth);
 
   return {
     id,
@@ -202,6 +229,7 @@ export function mapPost(response: unknown): Post {
     content: firstString(rawPost, ["content", "body", "text", "caption"]) ?? "",
     createdAt: firstString(rawPost, ["created_at", "createdAt", "published_at", "updated_at"]),
     media: mapMedia(rawPost, author.name),
+    quotedPost,
     counts: {
       replies: firstNumber(rawPost, ["replies_count", "reply_count", "comments_count"]) ?? 0,
       reposts: firstNumber(rawPost, ["reposts_count", "repost_count", "shares_count"]) ?? 0,
@@ -216,6 +244,10 @@ export function mapPost(response: unknown): Post {
     replyPermission: firstString(rawPost, ["reply_permission"]),
     topicName: firstString(rawPost, ["topic_name", "topic"]),
   };
+}
+
+export function mapPost(response: unknown): Post {
+  return mapPostInternal(response, 0);
 }
 
 function extractCollection(response: unknown) {

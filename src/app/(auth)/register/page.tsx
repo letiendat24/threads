@@ -1,7 +1,16 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
 import { AuthCard } from "@/features/auth/components/auth-card";
 import { RegisterForm } from "@/features/auth/components/register-form";
+
+export const metadata: Metadata = {
+  title: "Create account",
+  description: "Create a Soi chi city account to join the conversation.",
+  alternates: {
+    canonical: "/register",
+  },
+};
 
 export default function RegisterPage() {
   return (

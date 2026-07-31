@@ -30,6 +30,7 @@ export interface Post {
   content: string;
   createdAt?: string;
   media: PostMedia[];
+  quotedPost?: Post;
   counts: PostCounts;
   isLiked: boolean;
   isReposted: boolean;

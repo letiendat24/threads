@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
@@ -11,7 +12,7 @@ export function AppLogo({ compact = false, className }: AppLogoProps) {
   return (
     <Link
       href="/"
-      aria-label="Threads Clone home"
+      aria-label="Soi chi city home"
       className={cn(
         "inline-flex items-center rounded-full text-foreground transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         compact ? "size-11 justify-center" : "gap-3 px-3 py-2",
@@ -20,11 +21,11 @@ export function AppLogo({ compact = false, className }: AppLogoProps) {
     >
       <span
         aria-hidden="true"
-        className="grid size-8 place-items-center rounded-full border border-border-strong bg-primary text-primary-foreground"
+        className="grid size-8 place-items-center overflow-hidden rounded-full border border-border-strong bg-primary"
       >
-        <span className="text-section-title">@</span>
+        <Image src="/images/logos/soi-chi-city-mark.svg" alt="" width={32} height={32} priority />
       </span>
-      {compact ? null : <span className="text-nav-label">Threads</span>}
+      {compact ? null : <span className="text-nav-label">Soi chi city</span>}
     </Link>
   );
 }

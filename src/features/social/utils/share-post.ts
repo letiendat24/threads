@@ -6,7 +6,7 @@ export async function copyTextToClipboard(text: string) {
   await navigator.clipboard.writeText(text);
 }
 
-export async function sharePostLink(url: string, title = "Threads post") {
+export async function sharePostLink(url: string, title = "Soi chi city post") {
   if (navigator.share) {
     await navigator.share({
       title,

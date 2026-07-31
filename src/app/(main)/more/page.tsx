@@ -1,5 +1,19 @@
+import type { Metadata } from "next";
+
 import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader } from "@/components/shared/page-header";
+
+export const metadata: Metadata = {
+  title: "More",
+  description: "Access additional Soi chi city actions.",
+  alternates: {
+    canonical: "/more",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function MorePage() {
   return (

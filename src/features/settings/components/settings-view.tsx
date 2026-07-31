@@ -33,7 +33,7 @@ export function SettingsView() {
   return (
     <>
       <PageHeader title="Settings" description="Preferences and account" />
-      <SettingsSection title="Appearance" description="Choose how Threads looks on this device.">
+      <SettingsSection title="Appearance" description="Choose how Soi chi city looks on this device.">
         <ThemeSettings />
       </SettingsSection>
       <SettingsSection title="Account" description="Your active session and account actions.">

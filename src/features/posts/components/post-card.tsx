@@ -8,6 +8,7 @@ import { PostActions } from "@/features/posts/components/post-actions";
 import { PostContent } from "@/features/posts/components/post-content";
 import { PostHeader } from "@/features/posts/components/post-header";
 import { PostMedia } from "@/features/posts/components/post-media";
+import { QuotedPostPreview } from "@/features/posts/components/quoted-post-preview";
 import type { Post } from "@/features/posts/types/post-types";
 
 interface PostCardProps {
@@ -31,6 +32,7 @@ export function PostCard({ post, variant = "feed", showConnector = true }: PostC
     );
   }
 
+  const hasBody = post.content.trim().length > 0 || post.media.length > 0;
   const body = (
     <>
       <PostContent content={post.content} className={post.media.length > 0 ? "mt-2" : "mt-1.5"} />
@@ -59,14 +61,22 @@ export function PostCard({ post, variant = "feed", showConnector = true }: PostC
         <div className="min-w-0">
           <PostHeader post={post} />
           {isDetail ? (
-            <div className="mt-2">{body}</div>
+            <>
+              {hasBody ? <div className="mt-2">{body}</div> : null}
+              {post.quotedPost ? <QuotedPostPreview post={post.quotedPost} /> : null}
+            </>
           ) : (
-            <Link
-              href={`/post/${post.id}`}
-              className="block rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              {body}
-            </Link>
+            <>
+              {hasBody ? (
+                <Link
+                  href={`/post/${post.id}`}
+                  className="block rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  {body}
+                </Link>
+              ) : null}
+              {post.quotedPost ? <QuotedPostPreview post={post.quotedPost} /> : null}
+            </>
           )}
           <PostActions post={post} compact={variant === "reply"} />
         </div>

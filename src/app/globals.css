@@ -81,6 +81,14 @@
       sans-serif;
   }
 
+  .app-scroll-layout {
+    scrollbar-width: none;
+  }
+
+  .app-scroll-layout::-webkit-scrollbar {
+    display: none;
+  }
+
   button,
   input,
   textarea,
